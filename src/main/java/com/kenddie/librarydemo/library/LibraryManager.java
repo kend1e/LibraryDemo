@@ -31,6 +31,14 @@ public final class LibraryManager {
         return finalMap;
     }
 
+    public static void addToCatalog(LibraryEntity entity) {
+        loadCatalog().merge(entity.getId().toString(), 1, Integer::sum);
+    }
+
+    public static void removeFromCatalog(LibraryEntity entity) {
+        loadCatalog().merge(entity.getId().toString(), -1, Integer::sum);
+    }
+
     private static <T extends LibraryEntity> Map<LibraryEntity, Integer>
     loadEntities(String path, Class<T> clazz, Map<String, Integer> catalog) {
         Map<LibraryEntity, Integer> libraryEntities = new HashMap<>();

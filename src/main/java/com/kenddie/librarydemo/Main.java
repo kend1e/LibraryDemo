@@ -1,7 +1,10 @@
 package com.kenddie.librarydemo;
 
+import com.kenddie.librarydemo.library.BookLibrary;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        BookLibrary bookLibrary = BookLibrary.getInstance();
+
     }
 }

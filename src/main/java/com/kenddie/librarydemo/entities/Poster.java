@@ -19,11 +19,6 @@ public class Poster extends LibraryEntity {
     }
 
     @Override
-    public boolean isBorrowable() {
-        return false;
-    }
-
-    @Override
     public String getShortDescription() {
         return "Poster | " + getName() + " | Size: " + size.height + " x " + size.width;
     }

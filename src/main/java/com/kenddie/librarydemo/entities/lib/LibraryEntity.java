@@ -26,8 +26,6 @@ public abstract class LibraryEntity {
         this.content = content;
     }
 
-    public abstract boolean isBorrowable();
-
     public abstract String getShortDescription();
 
     public UUID getId() {
@@ -60,5 +58,21 @@ public abstract class LibraryEntity {
 
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof LibraryEntity other)) {
+            return false;
+        }
+        return id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
