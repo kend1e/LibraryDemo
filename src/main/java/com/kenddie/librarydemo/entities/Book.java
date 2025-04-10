@@ -8,16 +8,16 @@ import java.util.UUID;
 
 public class Book extends LibraryEntity {
     private final int pages;
-    private final BookType type;
+    private final BookType bookType;
 
 
     public Book(UUID id, String name,
                 String publisher, String author,
                 Languages language, LocalDate publishDate,
-                int value, int pages, BookType type, String content) {
+                int value, int pages, BookType bookType, String content) {
         super(id, name, publisher, author, language, publishDate, value, content);
         this.pages = pages;
-        this.type = type;
+        this.bookType = bookType;
     }
 
     @Override
@@ -27,11 +27,11 @@ public class Book extends LibraryEntity {
 
     @Override
     public String getShortDescription() {
-        return type.toString() + " | " + getName() + " | Author: " + getAuthor() + " | Pages: " + pages;
+        return bookType.toString() + " | " + getName() + " | Author: " + getAuthor() + " | Pages: " + pages;
     }
 
     public BookType getType() {
-        return type;
+        return bookType;
     }
 
     public int getPages() {
