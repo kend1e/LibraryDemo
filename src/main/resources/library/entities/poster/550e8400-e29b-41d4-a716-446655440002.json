@@ -1,0 +1,14 @@
+{
+  "id": "550e8400-e29b-41d4-a716-446655440002",
+  "name": "Star Wars Poster",
+  "publisher": "Lucasfilm",
+  "author": "Drew Struzan",
+  "language": "EN_UK",
+  "publishDate": 1999,
+  "value": 50,
+  "size": {
+    "width": 60,
+    "height": 90
+  },
+  "content": "Original Episode I poster"
+}

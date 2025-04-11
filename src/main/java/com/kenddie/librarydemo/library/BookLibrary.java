@@ -14,12 +14,10 @@ public class BookLibrary {
 
     public void addEntity(LibraryEntity entity) {
         library.merge(entity, 1, Integer::sum);
-        LibraryManager.addToCatalog(entity);
     }
 
     public void removeEntity(LibraryEntity entity) {
         library.merge(entity, -1, Integer::sum);
-        LibraryManager.removeFromCatalog(entity);
     }
 
     public static BookLibrary getInstance() {

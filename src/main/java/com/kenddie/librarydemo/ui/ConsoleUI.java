@@ -1,5 +1,9 @@
 package com.kenddie.librarydemo.ui;
 
+import com.kenddie.librarydemo.entities.lib.LibraryEntity;
+import com.kenddie.librarydemo.library.BookLibrary;
+
+import java.util.Map;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -14,7 +18,10 @@ public class ConsoleUI {
     public void run() {
         askUserName();
 
-
+        Map<LibraryEntity, Integer> libraryEntities = BookLibrary.getInstance().getLibrary();
+        for (LibraryEntity entity : libraryEntities.keySet()) {
+            System.out.println(entity.getShortDescription() + "Count: " + libraryEntities.get(entity));
+        }
     }
 
     private void askUserName() {

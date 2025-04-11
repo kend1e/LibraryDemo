@@ -1,0 +1,12 @@
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "The Hobbit",
+  "publisher": "George Allen & Unwin",
+  "author": "J.R.R. Tolkien",
+  "language": "EN_UK",
+  "publishDate": 1937,
+  "value": 100,
+  "pages": 310,
+  "bookType": "BOOK",
+  "content": "A fantasy novel"
+}

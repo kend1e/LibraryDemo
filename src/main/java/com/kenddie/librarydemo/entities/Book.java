@@ -4,7 +4,6 @@ import com.kenddie.librarydemo.entities.lib.Borrowable;
 import com.kenddie.librarydemo.entities.lib.Languages;
 import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 public class Book extends LibraryEntity implements Borrowable {
@@ -13,7 +12,7 @@ public class Book extends LibraryEntity implements Borrowable {
 
     public Book(UUID id, String name,
                 String publisher, String author,
-                Languages language, LocalDate publishDate,
+                Languages language, int publishDate,
                 int value, int pages, BookType bookType, String content) {
         super(id, name, publisher, author, language, publishDate, value, content);
         this.pages = pages;

@@ -1,6 +1,5 @@
 package com.kenddie.librarydemo.entities.lib;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 public abstract class LibraryEntity {
@@ -9,13 +8,13 @@ public abstract class LibraryEntity {
     private final String publisher;
     private final String author;
     private final Languages language;
-    private final LocalDate publishDate;
+    private final int publishDate;
     private final int value;
     private final String content;
 
     public LibraryEntity(UUID id, String name, String publisher,
                          String author, Languages language,
-                         LocalDate publishDate, int value, String content) {
+                         int publishDate, int value, String content) {
         this.id = id;
         this.name = name;
         this.publisher = publisher;
@@ -48,7 +47,7 @@ public abstract class LibraryEntity {
         return language;
     }
 
-    public LocalDate getPublishDate() {
+    public int getPublishDate() {
         return publishDate;
     }
 

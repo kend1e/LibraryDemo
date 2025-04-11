@@ -7,11 +7,12 @@ import com.kenddie.librarydemo.entities.Poster;
 import com.kenddie.librarydemo.entities.SignedBook;
 import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class LibraryManager {
@@ -21,58 +22,53 @@ public final class LibraryManager {
     private LibraryManager() {}
 
     public static Map<LibraryEntity, Integer> loadLibrary() {
-        Map<String, Integer> catalog = loadCatalog();
+        List<CatalogEntry> catalog = loadCatalog();
         Map<LibraryEntity, Integer> finalMap = new HashMap<>();
 
-        finalMap.putAll(loadEntities(ENTITIES_PATH + "books", Book.class, catalog));
-        finalMap.putAll(loadEntities(ENTITIES_PATH + "signed_books", SignedBook.class, catalog));
-        finalMap.putAll(loadEntities(ENTITIES_PATH + "posters", Poster.class, catalog));
+        for (CatalogEntry entry : catalog) {
+            switch (entry.getType()) {
+                case "book":
+                    loadEntity(finalMap, "book", Book.class, entry);
+                    break;
+                case "signed_book":
+                    loadEntity(finalMap, "signed_book", SignedBook.class, entry);
+                    break;
+                case "poster":
+                    loadEntity(finalMap, "poster", Poster.class, entry);
+                    break;
+            }
+        }
 
         return finalMap;
     }
 
-    public static void addToCatalog(LibraryEntity entity) {
-        loadCatalog().merge(entity.getId().toString(), 1, Integer::sum);
-    }
-
-    public static void removeFromCatalog(LibraryEntity entity) {
-        loadCatalog().merge(entity.getId().toString(), -1, Integer::sum);
-    }
-
-    private static <T extends LibraryEntity> Map<LibraryEntity, Integer>
-    loadEntities(String path, Class<T> clazz, Map<String, Integer> catalog) {
-        Map<LibraryEntity, Integer> libraryEntities = new HashMap<>();
-
-        File directory = new File(path);
-        File[] files = directory.listFiles((dir, name) -> name.endsWith("json"));
-
+    private static <T extends LibraryEntity> void loadEntity(
+            Map<LibraryEntity, Integer> map, String folder, Class<T> clazz, CatalogEntry entry) {
         Gson gson = new Gson();
-        if (files == null) {
-            return libraryEntities;
-        }
+        String filePath = ENTITIES_PATH + folder + "/" + entry.getId() + ".json";
 
-        for (File file : files) {
-            try (FileReader fileReader = new FileReader(file)) {
-                T entity = gson.fromJson(fileReader, clazz);
-                String id = entity.getId().toString();
-
-                if (catalog.containsKey(id)) {
-                    libraryEntities.put(entity, catalog.get(id));
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        try (InputStream inputStream = LibraryManager.class.getClassLoader().getResourceAsStream(filePath)) {
+            if (inputStream == null) {
+                throw new RuntimeException("Entity file not found: " + filePath);
             }
-        }
 
-        return libraryEntities;
+            T entity = gson.fromJson(new InputStreamReader(inputStream), clazz);
+            map.put(entity, entry.getCount());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load: " + filePath, e);
+        }
     }
 
-    private static Map<String, Integer> loadCatalog() {
-        Gson libraryCatalog = new Gson();
-        Type type = new TypeToken<Map<String, Integer>>() {}.getType();
+    private static List<CatalogEntry> loadCatalog() {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<CatalogEntry>>() {}.getType();
 
-        try (FileReader fileReader = new FileReader(CATALOG_PATH)) {
-            return libraryCatalog.fromJson(fileReader, type);
+        try (InputStream inputStream = LibraryManager.class.getClassLoader().getResourceAsStream(CATALOG_PATH)) {
+            if (inputStream == null) {
+                throw new RuntimeException("Catalog file not found: " + CATALOG_PATH);
+            }
+
+            return gson.fromJson(new InputStreamReader(inputStream), listType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

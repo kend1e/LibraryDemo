@@ -4,7 +4,6 @@ import com.kenddie.librarydemo.entities.lib.Languages;
 import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 
 import java.awt.*;
-import java.time.LocalDate;
 import java.util.UUID;
 
 public class Poster extends LibraryEntity {
@@ -12,7 +11,7 @@ public class Poster extends LibraryEntity {
 
     public Poster(UUID id, String name,
                   String publisher, String author,
-                  Languages language, LocalDate publishDate,
+                  Languages language, int publishDate,
                   int value, Dimension size, String content) {
         super(id, name, publisher, author, language, publishDate, value, content);
         this.size = size;
