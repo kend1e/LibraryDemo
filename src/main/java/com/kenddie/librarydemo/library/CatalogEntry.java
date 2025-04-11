@@ -1,14 +1,17 @@
 package com.kenddie.librarydemo.library;
 
-@SuppressWarnings("ClassCanBeRecord")
 public class CatalogEntry {
     private final String id;
     private final String type;
-    private final int count;
+    private int count;
 
     public CatalogEntry(String id, String type, int count) {
         this.id = id;
         this.type = type;
+        this.count = count;
+    }
+
+    public void setCount(int count) {
         this.count = count;
     }
 

@@ -7,9 +7,13 @@ import com.kenddie.librarydemo.entities.Poster;
 import com.kenddie.librarydemo.entities.SignedBook;
 import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +21,7 @@ import java.util.Map;
 
 public final class LibraryManager {
     private static final String ENTITIES_PATH = "library/entities/";
-    private static final String CATALOG_PATH = "library/library_catalog.json";
+    private static final String CATALOG_PATH = "data/library_catalog.json";
 
     private LibraryManager() {}
 
@@ -59,18 +63,23 @@ public final class LibraryManager {
         }
     }
 
-    private static List<CatalogEntry> loadCatalog() {
+    public static List<CatalogEntry> loadCatalog() {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<CatalogEntry>>() {}.getType();
 
-        try (InputStream inputStream = LibraryManager.class.getClassLoader().getResourceAsStream(CATALOG_PATH)) {
-            if (inputStream == null) {
-                throw new RuntimeException("Catalog file not found: " + CATALOG_PATH);
-            }
-
-            return gson.fromJson(new InputStreamReader(inputStream), listType);
+        try (Reader reader = new FileReader(CATALOG_PATH)) {
+            return gson.fromJson(reader, listType);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to load catalog", e);
+        }
+    }
+
+    public static void saveCatalog(List<CatalogEntry> catalog) {
+        Gson gson = new Gson();
+        try (Writer writer = new FileWriter(CATALOG_PATH)) {
+            gson.toJson(catalog, writer);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save catalog", e);
         }
     }
 }
