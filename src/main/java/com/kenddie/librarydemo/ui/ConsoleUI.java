@@ -69,12 +69,16 @@ public class ConsoleUI {
         }
 
         LibraryEntity entity = InputUtils.askForEntityChoice(
-                "\nChoose an item to borrow:", entities, LibraryEntity::getShortDescription, scanner);
+                "\nChoose an item to borrow:", entities, (libraryEntity) ->
+                        libraryEntity.getShortDescription()
+                        + " | Count: "
+                        + BookLibrary.getInstance().getCountOfEntity(libraryEntity),
+                scanner);
 
         if (BookLibrary.getInstance().borrowEntity(entity, userName)) {
             System.out.println("You have successfully borrowed " + entity.getShortDescription());
             System.out.println("There are "
-                    + BookLibrary.getInstance().findEntryById(entity.getId().toString()).getCount()
+                    + BookLibrary.getInstance().getCountOfEntity(entity)
                     + " of those books in the library.");
         } else {
             System.out.println("You can't borrow this item.");
@@ -89,7 +93,10 @@ public class ConsoleUI {
         }
 
         LibraryEntity entity = InputUtils.askForEntityChoice(
-                "\nChoose an item to read:", entities, LibraryEntity::getShortDescription, scanner);
+                "\nChoose an item to read:", entities, (libraryEntity) ->
+                        libraryEntity.getShortDescription()
+                                + " | Count: "
+                                + BookLibrary.getInstance().getCountOfEntity(libraryEntity), scanner);
 
         if (entity instanceof Readable) {
             PageReader.readContent(entity.getContent(), scanner);
@@ -122,7 +129,7 @@ public class ConsoleUI {
         if (BookLibrary.getInstance().returnEntity(entity, userName)) {
             System.out.println("You have successfully returned " + entity.getShortDescription());
             System.out.println("There are "
-                    + BookLibrary.getInstance().findEntryById(entity.getId().toString()).getCount()
+                    + BookLibrary.getInstance().getCountOfEntity(entity)
                     + " those books in the library.");
         } else {
             System.out.println("You can't return this item.");

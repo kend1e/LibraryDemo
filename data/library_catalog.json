@@ -2,24 +2,24 @@
   {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "type": "book",
-    "count": 3,
-    "users": []
+    "count": 2,
+    "users": [
+      "Sus"
+    ]
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440002",
     "type": "poster",
     "count": 3,
-    "users": [
-      "Sus",
-      "Bob"
-    ]
+    "users": []
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440001",
     "type": "book",
-    "count": 1,
+    "count": 0,
     "users": [
-      "Glek"
+      "Sus",
+      "GLek"
     ]
   }
 ]

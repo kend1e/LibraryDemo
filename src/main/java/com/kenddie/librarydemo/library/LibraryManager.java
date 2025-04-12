@@ -16,9 +16,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 public final class LibraryManager {
     private static final String ENTITIES_PATH = "library/entities/";
@@ -26,29 +24,29 @@ public final class LibraryManager {
 
     private LibraryManager() {}
 
-    public static Map<LibraryEntity, Integer> loadLibrary() {
+    public static HashSet<LibraryEntity> loadLibrary() {
         HashSet<CatalogEntry> catalog = loadCatalog();
-        Map<LibraryEntity, Integer> finalMap = new HashMap<>();
+        HashSet<LibraryEntity> library = new HashSet<>();
 
         for (CatalogEntry entry : catalog) {
             switch (entry.getType()) {
                 case "book":
-                    loadEntity(finalMap, "book", Book.class, entry);
+                    loadEntity(library, "book", Book.class, entry);
                     break;
                 case "signed_book":
-                    loadEntity(finalMap, "signed_book", SignedBook.class, entry);
+                    loadEntity(library, "signed_book", SignedBook.class, entry);
                     break;
                 case "poster":
-                    loadEntity(finalMap, "poster", Poster.class, entry);
+                    loadEntity(library, "poster", Poster.class, entry);
                     break;
             }
         }
 
-        return finalMap;
+        return library;
     }
 
     private static <T extends LibraryEntity> void loadEntity(
-            Map<LibraryEntity, Integer> map, String folder, Class<T> clazz, CatalogEntry entry) {
+            HashSet<LibraryEntity> library, String folder, Class<T> clazz, CatalogEntry entry) {
         Gson gson = new Gson();
         String filePath = ENTITIES_PATH + folder + "/" + entry.getId() + ".json";
 
@@ -58,7 +56,7 @@ public final class LibraryManager {
             }
 
             T entity = gson.fromJson(new InputStreamReader(inputStream), clazz);
-            map.put(entity, entry.getCount());
+            library.add(entity);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load: " + filePath, e);
         }

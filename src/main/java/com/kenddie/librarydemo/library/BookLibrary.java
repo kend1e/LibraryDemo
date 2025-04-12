@@ -4,16 +4,22 @@ import com.kenddie.librarydemo.entities.lib.Borrowable;
 import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 
 import java.util.HashSet;
-import java.util.Map;
 
 public class BookLibrary {
     private static BookLibrary bookLibrary;
-    private final Map<LibraryEntity, Integer> library;
+    private final HashSet<LibraryEntity> library;
     private final HashSet<CatalogEntry> catalog;
 
     private BookLibrary() {
         catalog = LibraryManager.loadCatalog();
         library = LibraryManager.loadLibrary();
+    }
+
+    public static BookLibrary getInstance() {
+        if (bookLibrary == null) {
+            bookLibrary = new BookLibrary();
+        }
+        return bookLibrary;
     }
 
     public boolean borrowEntity(LibraryEntity entity, String userName) {
@@ -27,11 +33,10 @@ public class BookLibrary {
             return false;
         }
 
-        catalogEntry.setCount(catalogEntry.getCount() - 1);
         if (!catalogEntry.addUser(userName)) {
             return false;
         }
-        library.merge(entity, -1, Integer::sum);
+        catalogEntry.setCount(catalogEntry.getCount() - 1);
         LibraryManager.saveCatalog(catalog);
         return true;
     }
@@ -47,23 +52,15 @@ public class BookLibrary {
             return false;
         }
 
-        catalogEntry.setCount(catalogEntry.getCount() + 1);
         if (!catalogEntry.removeUser(userName)) {
             return false;
         }
-        library.merge(entity, 1, Integer::sum);
+        catalogEntry.setCount(catalogEntry.getCount() + 1);
         LibraryManager.saveCatalog(catalog);
         return true;
     }
 
-    public static BookLibrary getInstance() {
-        if (bookLibrary == null) {
-            bookLibrary = new BookLibrary();
-        }
-        return bookLibrary;
-    }
-
-    public Map<LibraryEntity, Integer> getLibrary() {
+    public HashSet<LibraryEntity> getLibrary() {
         return library;
     }
 
@@ -81,7 +78,7 @@ public class BookLibrary {
     }
 
     public LibraryEntity findEntityById(String id) {
-        for (LibraryEntity entity : library.keySet()) {
+        for (LibraryEntity entity : library) {
             if (entity.getId().toString().equals(id)) {
                 return entity;
             }
@@ -90,10 +87,9 @@ public class BookLibrary {
     }
 
     public LibraryEntity[] getAvailableEntities() {
-        LibraryEntity[] entities = library.entrySet()
+        LibraryEntity[] entities = library
                 .stream()
-                .filter(entry -> entry.getValue() > 0)
-                .map(Map.Entry::getKey)
+                .filter(entity -> getCountOfEntity(entity) > 0)
                 .toArray(LibraryEntity[]::new);
 
         if (entities.length == 0) {
@@ -101,5 +97,14 @@ public class BookLibrary {
         }
 
         return entities;
+    }
+
+    public int getCountOfEntity(LibraryEntity entity) {
+        for (CatalogEntry entry : catalog) {
+            if (entry.getId().equals(entity.getId().toString())) {
+                return entry.getCount();
+            }
+        }
+        return -1;
     }
 }
