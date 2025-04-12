@@ -3,8 +3,9 @@ package com.kenddie.librarydemo.ui;
 import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 import com.kenddie.librarydemo.entities.lib.Readable;
 import com.kenddie.librarydemo.library.BookLibrary;
+import com.kenddie.librarydemo.library.CatalogEntry;
 
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -37,7 +38,7 @@ public class ConsoleUI {
         askUserName();
 
         do {
-            System.out.println("Welcome to the library!");
+            System.out.println("\nWelcome to the library!");
         } while (showMenu());
     }
 
@@ -47,27 +48,42 @@ public class ConsoleUI {
 
         switch (menuOption) {
             case READ:
-                showCurrentLibrary();
-                readEntity();
+                libraryRead();
                 return true;
             case BORROW:
+                libraryBorrow();
                 return true;
             case RETURN:
+                libraryReturn();
                 return true;
             default:
                 return false;
         }
     }
 
-    private void readEntity() {
-        Map<LibraryEntity, Integer> library = BookLibrary.getInstance().getLibrary();
-        LibraryEntity[] entities = library.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() > 0)
-                .map(Map.Entry::getKey)
-                .toArray(LibraryEntity[]::new);
+    private void libraryBorrow() {
+        LibraryEntity[] entities = BookLibrary.getInstance().getAvailableEntities();
+        if (entities == null) {
+            System.out.println("No items are available in the library.");
+            return;
+        }
 
-        if (entities.length == 0) {
+        LibraryEntity entity = InputUtils.askForEntityChoice(
+                "\nChoose an item to borrow:", entities, LibraryEntity::getShortDescription, scanner);
+
+        if (BookLibrary.getInstance().borrowEntity(entity, userName)) {
+            System.out.println("You have successfully borrowed " + entity.getShortDescription());
+            System.out.println("There are "
+                    + BookLibrary.getInstance().findEntryById(entity.getId().toString()).getCount()
+                    + " of those books in the library.");
+        } else {
+            System.out.println("You can't borrow this item.");
+        }
+    }
+
+    private void libraryRead() {
+        LibraryEntity[] entities = BookLibrary.getInstance().getAvailableEntities();
+        if (entities == null) {
             System.out.println("No items are available in the library.");
             return;
         }
@@ -82,12 +98,43 @@ public class ConsoleUI {
         }
     }
 
-    private void showCurrentLibrary() {
+    private void libraryReturn() {
+        HashSet<LibraryEntity> borrowed = new HashSet<>();
+        HashSet<CatalogEntry> catalog = BookLibrary.getInstance().getCatalog();
+
+        for (CatalogEntry catalogEntry : catalog) {
+            for (String user : catalogEntry.getUsers()) {
+                if (user.equals(userName)) {
+                    borrowed.add(BookLibrary.getInstance().findEntityById(catalogEntry.getId()));
+                }
+            }
+        }
+
+        if (borrowed.isEmpty()) {
+            System.out.println("You haven't borrowed any items.");
+            return;
+        }
+
+        LibraryEntity entity = InputUtils.askForEntityChoice(
+                "\nChoose an item to return:", borrowed.toArray(new LibraryEntity[0]),
+                LibraryEntity::getShortDescription, scanner);
+
+        if (BookLibrary.getInstance().returnEntity(entity, userName)) {
+            System.out.println("You have successfully returned " + entity.getShortDescription());
+            System.out.println("There are "
+                    + BookLibrary.getInstance().findEntryById(entity.getId().toString()).getCount()
+                    + " those books in the library.");
+        } else {
+            System.out.println("You can't return this item.");
+        }
+    }
+
+    /*private void showCurrentLibrary() {
         Map<LibraryEntity, Integer> libraryEntities = BookLibrary.getInstance().getLibrary();
         for (LibraryEntity entity : libraryEntities.keySet()) {
             System.out.println(entity.getShortDescription() + " | Count: " + libraryEntities.get(entity));
         }
-    }
+    }*/
 
     private void askUserName() {
         String name;

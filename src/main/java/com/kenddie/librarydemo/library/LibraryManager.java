@@ -1,6 +1,7 @@
 package com.kenddie.librarydemo.library;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.kenddie.librarydemo.entities.Book;
 import com.kenddie.librarydemo.entities.Poster;
@@ -16,7 +17,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 
 public final class LibraryManager {
@@ -26,7 +27,7 @@ public final class LibraryManager {
     private LibraryManager() {}
 
     public static Map<LibraryEntity, Integer> loadLibrary() {
-        List<CatalogEntry> catalog = loadCatalog();
+        HashSet<CatalogEntry> catalog = loadCatalog();
         Map<LibraryEntity, Integer> finalMap = new HashMap<>();
 
         for (CatalogEntry entry : catalog) {
@@ -63,9 +64,9 @@ public final class LibraryManager {
         }
     }
 
-    public static List<CatalogEntry> loadCatalog() {
+    public static HashSet<CatalogEntry> loadCatalog() {
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<CatalogEntry>>() {}.getType();
+        Type listType = new TypeToken<HashSet<CatalogEntry>>() {}.getType();
 
         try (Reader reader = new FileReader(CATALOG_PATH)) {
             return gson.fromJson(reader, listType);
@@ -74,8 +75,8 @@ public final class LibraryManager {
         }
     }
 
-    public static void saveCatalog(List<CatalogEntry> catalog) {
-        Gson gson = new Gson();
+    public static void saveCatalog(HashSet<CatalogEntry> catalog) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (Writer writer = new FileWriter(CATALOG_PATH)) {
             gson.toJson(catalog, writer);
         } catch (IOException e) {
