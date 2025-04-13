@@ -8,6 +8,11 @@ import com.kenddie.librarydemo.ui.PageReader;
 
 import java.util.UUID;
 
+
+/**
+ * Book item. Extends {@link LibraryEntity} and implements {@link Borrowable} and {@link Readable}.
+ * Contains additional info about different book types such as magazines and newspapers {@link BookType}.
+ */
 public class Book extends LibraryEntity implements Borrowable, Readable {
     private final BookType bookType;
 
@@ -19,6 +24,9 @@ public class Book extends LibraryEntity implements Borrowable, Readable {
         this.bookType = bookType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getShortDescription() {
         return bookType.toString() + " | " + getName() + " | Author: " + getAuthor() + " | Pages: " + getPages();
@@ -28,6 +36,11 @@ public class Book extends LibraryEntity implements Borrowable, Readable {
         return bookType;
     }
 
+    /**
+     * Calculates and returns the number of pages based on content length and page size.
+     *
+     * @return number of pages
+     */
     @Override
     public int getPages() {
         if (getContent() == null || getContent().isBlank()) {

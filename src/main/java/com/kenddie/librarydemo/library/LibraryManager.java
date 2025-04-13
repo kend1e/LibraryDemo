@@ -18,12 +18,20 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 
+/**
+ * Utility class for loading the library entities stored in assets and saving the catalog data from and to JSON files using Gson.
+ */
 public final class LibraryManager {
     private static final String ENTITIES_PATH = "library/entities/";
     private static final String CATALOG_PATH = "data/library_catalog.json";
 
     private LibraryManager() {}
 
+    /**
+     * Loads the HashSet of library entities based on the catalog.
+     *
+     * @return a set of loaded entities
+     */
     public static HashSet<LibraryEntity> loadLibrary() {
         HashSet<CatalogEntry> catalog = loadCatalog();
         HashSet<LibraryEntity> library = new HashSet<>();
@@ -62,6 +70,11 @@ public final class LibraryManager {
         }
     }
 
+    /**
+     * Loads the catalog from disk.
+     *
+     * @return a set of catalog entries
+     */
     public static HashSet<CatalogEntry> loadCatalog() {
         Gson gson = new Gson();
         Type listType = new TypeToken<HashSet<CatalogEntry>>() {}.getType();
@@ -73,6 +86,11 @@ public final class LibraryManager {
         }
     }
 
+    /**
+     * Saves the catalog to disk in JSON format.
+     *
+     * @param catalog the catalog to save
+     */
     public static void saveCatalog(HashSet<CatalogEntry> catalog) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (Writer writer = new FileWriter(CATALOG_PATH)) {

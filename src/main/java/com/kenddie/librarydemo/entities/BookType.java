@@ -1,5 +1,8 @@
 package com.kenddie.librarydemo.entities;
 
+/**
+ * Enum of the type of the book, such as standard book, magazine, or newspaper.
+ */
 public enum BookType {
     BOOK,
     MAGAZINE,

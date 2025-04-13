@@ -5,6 +5,11 @@ import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 
 import java.util.HashSet;
 
+/**
+ * Singleton class that manages the state of the library, including available items and catalog entries.
+ * Supports borrowing and returning of borrowable items.
+ */
+
 public class BookLibrary {
     private static BookLibrary bookLibrary;
     private final HashSet<LibraryEntity> library;
@@ -22,6 +27,13 @@ public class BookLibrary {
         return bookLibrary;
     }
 
+    /**
+     * Attempts to borrow the specified entity for a given user.
+     *
+     * @param entity the item to borrow
+     * @param userName the name of the user
+     * @return {@code true} if the borrow was successful, otherwise {@code false}
+     */
     public boolean borrowEntity(LibraryEntity entity, String userName) {
         if (!(entity instanceof Borrowable)) {
             return false;
@@ -41,6 +53,13 @@ public class BookLibrary {
         return true;
     }
 
+    /**
+     * Attempts to return the specified entity for a given user.
+     *
+     * @param entity the item to return
+     * @param userName the name of the user
+     * @return {@code true} if the return was successful, otherwise {@code false}
+     */
     public boolean returnEntity(LibraryEntity entity, String userName) {
         if (!(entity instanceof Borrowable)) {
             return false;
@@ -68,6 +87,12 @@ public class BookLibrary {
         return catalog;
     }
 
+    /**
+     * Finds a catalog entry by its ID.
+     *
+     * @param id the ID of the item
+     * @return the catalog entry, or {@code null} if not found
+     */
     public CatalogEntry findEntryById(String id) {
         for (CatalogEntry entry : catalog) {
             if (entry.getId().equals(id)) {
@@ -77,6 +102,12 @@ public class BookLibrary {
         return null;
     }
 
+    /**
+     * Finds a library entity by its ID.
+     *
+     * @param id the ID of the entity
+     * @return the library entity instance, or {@code null} if not found
+     */
     public LibraryEntity findEntityById(String id) {
         for (LibraryEntity entity : library) {
             if (entity.getId().toString().equals(id)) {
@@ -86,6 +117,11 @@ public class BookLibrary {
         return null;
     }
 
+    /**
+     * Returns an array of entities that are available (have non-zero count).
+     *
+     * @return an array of available entities, or {@code null} if none are available
+     */
     public LibraryEntity[] getAvailableEntities() {
         LibraryEntity[] entities = library
                 .stream()
@@ -99,6 +135,12 @@ public class BookLibrary {
         return entities;
     }
 
+    /**
+     * Returns the number of available copies of the specified entity.
+     *
+     * @param entity the entity to check
+     * @return the count, or -1 if the entity is not in the catalog
+     */
     public int getCountOfEntity(LibraryEntity entity) {
         for (CatalogEntry entry : catalog) {
             if (entry.getId().equals(entity.getId().toString())) {

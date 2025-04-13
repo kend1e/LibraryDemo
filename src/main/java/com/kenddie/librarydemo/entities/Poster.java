@@ -6,6 +6,10 @@ import com.kenddie.librarydemo.entities.lib.LibraryEntity;
 import java.awt.*;
 import java.util.UUID;
 
+/**
+ * Poster item. Extends {@link LibraryEntity}.
+ * Contains a one-page content and the real world size of the poster.
+ */
 public class Poster extends LibraryEntity {
     private final Dimension size;
 
@@ -17,6 +21,9 @@ public class Poster extends LibraryEntity {
         this.size = size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getShortDescription() {
         return "Poster | " + getName() + " | Size: " + size.height + " x " + size.width;

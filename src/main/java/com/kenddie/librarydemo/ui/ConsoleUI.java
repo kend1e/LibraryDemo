@@ -8,6 +8,10 @@ import com.kenddie.librarydemo.library.CatalogEntry;
 import java.util.HashSet;
 import java.util.Scanner;
 
+/**
+ * Console-based user interface for interacting with the library.
+ * Allows the user to borrow, return, and read items via a simple menu system.
+ */
 public class ConsoleUI {
     private enum MenuOption {
         READ("Read a book"),
@@ -135,13 +139,6 @@ public class ConsoleUI {
             System.out.println("You can't return this item.");
         }
     }
-
-    /*private void showCurrentLibrary() {
-        Map<LibraryEntity, Integer> libraryEntities = BookLibrary.getInstance().getLibrary();
-        for (LibraryEntity entity : libraryEntities.keySet()) {
-            System.out.println(entity.getShortDescription() + " | Count: " + libraryEntities.get(entity));
-        }
-    }*/
 
     private void askUserName() {
         String name;

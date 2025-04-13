@@ -2,6 +2,10 @@ package com.kenddie.librarydemo.ui;
 
 import java.util.Scanner;
 
+/**
+ * Allows users to read long content in paginated form in the console.
+ * Content is divided into fixed-size pages and navigated interactively.
+ */
 public final class PageReader {
     private enum PageAction {
         NEXT("Next"),
@@ -24,6 +28,12 @@ public final class PageReader {
     private PageReader() {
     }
 
+    /**
+     * Reads the content using the console until user wants to quit.
+     *
+     * @param content the content to read
+     * @param scanner the scanner for user input
+     */
     public static void readContent(String content, Scanner scanner) {
         if (content == null || content.isEmpty()) {
             System.out.println("This item has no readable content.");

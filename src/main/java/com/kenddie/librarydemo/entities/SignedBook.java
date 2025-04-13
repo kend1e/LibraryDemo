@@ -4,6 +4,9 @@ import com.kenddie.librarydemo.entities.lib.Languages;
 
 import java.util.UUID;
 
+/**
+ * Signed book item. Extends {@link Book} and overrides its value to increased price.
+ */
 public class SignedBook extends Book {
     private static final int VALUE_MULTIPLIER = 2;
 

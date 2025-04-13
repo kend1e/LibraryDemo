@@ -1,5 +1,8 @@
 package com.kenddie.librarydemo.entities.lib;
 
+/**
+ * Supported languages for library items.
+ */
 public enum Languages {
     EN_UK("English (United Kingdom)"),
     SK("Slovak"),
@@ -13,6 +16,11 @@ public enum Languages {
         this.languageName = languageName;
     }
 
+    /**
+     * Returns a full name of the language in English.
+     *
+     * @return language display name
+     */
     public String getLanguageName() {
         return languageName;
     }

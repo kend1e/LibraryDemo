@@ -5,9 +5,22 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Function;
 
+/**
+ * Utility class for handling user input from the console.
+ * Provides generic methods for selecting from a list of options or entities.
+ */
 public final class InputUtils {
     private InputUtils() {}
 
+    /**
+     * Asks the user to choose an option from an enum.
+     *
+     * @param text the displayed question to ask
+     * @param choices the enum of available options
+     * @param displayFunction the function how to display each option
+     * @param scanner the scanner for input
+     * @return the selected option
+     */
     public static <T extends Enum<T>> T askForChoice(String text, T[] choices, Function<T, String> displayFunction, Scanner scanner) {
         do {
             System.out.println(text);
@@ -37,6 +50,15 @@ public final class InputUtils {
         } while (true);
     }
 
+    /**
+     * Asks the user to choose an option from an array.
+     *
+     * @param text the displayed question to ask
+     * @param choices the array of available options
+     * @param displayFunction the function how to display each option
+     * @param scanner the scanner for input
+     * @return the selected option
+     */
     public static <T> T askForEntityChoice(String text, T[] choices, Function<T, String> displayFunction, Scanner scanner) {
         do {
             System.out.println(text);

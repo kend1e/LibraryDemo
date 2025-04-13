@@ -11,9 +11,9 @@
     ]
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "id": "550e8400-e29b-41d4-a716-446655440003",
     "type": "poster",
-    "count": 3,
+    "count": 1,
     "users": []
   },
   {
@@ -23,20 +23,20 @@
     "users": [
       "Sus",
       "Xi Jinping",
-      "Marek",
-      "A"
+      "A",
+      "Marek"
     ]
-  },
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440003",
-    "type": "poster",
-    "count": 1,
-    "users": []
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440004",
     "type": "signed_book",
     "count": 12,
+    "users": []
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "type": "poster",
+    "count": 3,
     "users": []
   }
 ]

@@ -2,6 +2,9 @@ package com.kenddie.librarydemo.library;
 
 import java.util.HashSet;
 
+/**
+ * Catalog entry that maps a library item to its count and the users who have borrowed it.
+ */
 public class CatalogEntry {
     private final String id;
     private final String type;
