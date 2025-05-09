@@ -13,8 +13,8 @@ public class SignedBook extends Book {
     public SignedBook(UUID id, String name,
                       String publisher, String author,
                       Languages language, int publishDate,
-                      int value, BookType bookType, String content) {
-        super(id, name, publisher, author, language, publishDate, value, bookType, content);
+                      int value, BookType bookType, String content, int pageSize) {
+        super(id, name, publisher, author, language, publishDate, value, bookType, content, pageSize);
     }
 
     @Override

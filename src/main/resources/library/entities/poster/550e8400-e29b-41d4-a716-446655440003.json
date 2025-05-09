@@ -6,6 +6,7 @@
   "language": "EN_UK",
   "publishDate": 2011,
   "value": 56,
+  "pageSize": 1000,
   "size": {
     "width": 90,
     "height": 110

@@ -1,5 +1,8 @@
 package com.kenddie.librarydemo.ui;
 
+import com.kenddie.librarydemo.entities.lib.LibraryEntity;
+import com.kenddie.librarydemo.entities.lib.Readable;
+
 import java.util.Scanner;
 
 /**
@@ -23,28 +26,54 @@ public final class PageReader {
         }
     }
 
-    public static final int PAGE_SIZE = 1000;
-
     private PageReader() {
     }
 
-    /**
-     * Reads the content using the console until user wants to quit.
-     *
-     * @param content the content to read
-     * @param scanner the scanner for user input
-     */
-    public static void readContent(String content, Scanner scanner) {
+    /*public static int read(Readable entity, int currentPage, Scanner scanner) {
+        String content = entity.getPage(currentPage);
+
         if (content == null || content.isEmpty()) {
+            System.out.println("This item has no readable content.");
+            return 0;
+        }
+
+        int totalPages = entity.getPageCount();
+
+        while (true) {
+            System.out.println("\nPage " + (currentPage + 1) + " / " + totalPages);
+            System.out.println(content);
+
+            PageAction action = InputUtils.askForChoice("Choose an action:", PageAction.values(), PageAction::getTitle, scanner);
+
+            switch (action) {
+                case NEXT:
+                    if (currentPage < totalPages - 1) {
+                        return currentPage + 1;
+                    }
+                    break;
+                case PREVIOUS:
+                    if (currentPage > 0) {
+                        return currentPage - 1;
+                    }
+                    break;
+                case EXIT:
+                    return 0;
+            }
+        }
+    }*/
+
+    public static void readContent(Readable entity, Scanner scanner) {
+        if (entity.getPageCount() <= 0) {
             System.out.println("This item has no readable content.");
             return;
         }
-
-        int totalPages = content.length() / PAGE_SIZE;
         int currentPage = 0;
 
+        int totalPages = entity.getPageCount();
+
         while (true) {
-            showPage(content, currentPage, totalPages);
+            System.out.println("\nPage " + (currentPage + 1) + " / " + totalPages);
+            System.out.println(entity.getPage(currentPage));
 
             PageAction action = InputUtils.askForChoice("Choose an action:", PageAction.values(), PageAction::getTitle, scanner);
 
@@ -63,14 +92,5 @@ public final class PageReader {
                     return;
             }
         }
-    }
-
-    private static void showPage(String content, int currentPage, int totalPages) {
-        int start = currentPage * PAGE_SIZE;
-        int end = Math.min(content.length(), start + PAGE_SIZE);
-        String page = content.substring(start, end);
-
-        System.out.println("\nPage " + (currentPage + 1) + " / " + totalPages);
-        System.out.println(page);
     }
 }

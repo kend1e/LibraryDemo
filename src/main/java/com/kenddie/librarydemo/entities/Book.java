@@ -15,13 +15,15 @@ import java.util.UUID;
  */
 public class Book extends LibraryEntity implements Borrowable, Readable {
     private final BookType bookType;
+    private final int pageSize;
 
     public Book(UUID id, String name,
                 String publisher, String author,
                 Languages language, int publishDate,
-                int value, BookType bookType, String content) {
+                int value, BookType bookType, String content, int pageSize) {
         super(id, name, publisher, author, language, publishDate, value, content);
         this.bookType = bookType;
+        this.pageSize = pageSize;
     }
 
     /**
@@ -29,7 +31,7 @@ public class Book extends LibraryEntity implements Borrowable, Readable {
      */
     @Override
     public String getShortDescription() {
-        return bookType.toString() + " | " + getName() + " | Author: " + getAuthor() + " | Pages: " + getPages();
+        return bookType.toString() + " | " + getName() + " | Author: " + getAuthor() + " | Pages: " + getPageCount();
     }
 
     public BookType getType() {
@@ -42,10 +44,17 @@ public class Book extends LibraryEntity implements Borrowable, Readable {
      * @return number of pages
      */
     @Override
-    public int getPages() {
+    public int getPageCount() {
         if (getContent() == null || getContent().isBlank()) {
             return 0;
         }
-        return getContent().length() / PageReader.PAGE_SIZE;
+        return getContent().length() / pageSize;
+    }
+
+    @Override
+    public String getPage(int currentPage) {
+        int start = currentPage * pageSize;
+        int end = Math.min(getContent().length(), start + pageSize);
+        return getContent().substring(start, end);
     }
 }

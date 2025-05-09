@@ -102,10 +102,11 @@ public class ConsoleUI {
                                 + " | Count: "
                                 + BookLibrary.getInstance().getCountOfEntity(libraryEntity), scanner);
 
+
         if (entity instanceof Readable) {
-            PageReader.readContent(entity.getContent(), scanner);
+            PageReader.readContent((Readable) entity, scanner);
         } else {
-            System.out.println("\n" + entity.getContent() + "\n");
+            System.out.println(entity.getContent());
         }
     }
 
